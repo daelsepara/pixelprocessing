@@ -8,7 +8,7 @@ magnify_image <- function(im, sf) {
 	
 	for (j in 1:y) {
 		for (i in 1:x) {
-			magnifiedImage[(sf*(i-1)+1):(sf*i),(sf*(j-1)+1):(sf*j)] = un[i,j]
+			magnifiedImage[(sf*(i-1)+1):(sf*i),(sf*(j-1)+1):(sf*j)] = im[i,j]
 		}
 	}
 	
