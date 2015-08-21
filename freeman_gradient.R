@@ -1,17 +1,3 @@
-# utility functions to compute nth neighbor of an array element with wrap-around
-
-right_index <- function(i, size, n) {
-	
-	# compute index of nth neighbor to the right
-	return((i+n-1) %% size + 1)
-}
-
-left_index <- function(i, size, n) {
-	
-	#compute index of nth neighbor to the left
-	return((i+size-n-1) %% size + 1)
-}
-
 freeman_gradient <- function(data_points,type) {
 	
 	size = length(data_points)
@@ -22,12 +8,33 @@ freeman_gradient <- function(data_points,type) {
 	{
 		for (index in 1:size)
 		{
-			gradient[index] = data_points[right_index(index,size,1)] - data_points[index]
+			if (index == size)
+			{
+				gradient[index] = data_points[1] - data_points[index]
+			}
+			else
+			{
+				gradient[index] = data_points[index+1] - data_points[index]
+			}
 		}
 		
 		for (index in 1:size)
 		{
-			running_sum[index] = gradient[index]+gradient[right_index(index,size,1)]+gradient[right_index(index,size,2)]
+			if (index > size-2)
+			{
+				if (index == size)
+				{
+					running_sum[index] = gradient[index]+gradient[1]+gradient[2]
+				}
+				else
+				{
+					running_sum[index] = gradient[index]+gradient[index+1]+gradient[1]
+				}
+			}
+			else
+			{
+				running_sum[index] = gradient[index]+gradient[index+1]+gradient[index+2]
+			}
 		}
 	}
 	
