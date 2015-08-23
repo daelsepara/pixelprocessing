@@ -77,11 +77,9 @@ phi_f <- function(f, g) {
 }
 
 phi <- function(f) {
-  phi_ = phi_f(f, npq)
-  return(phi_)
+  return(phi_f(f, npq))
 }
 
 phi_m <- function(f) {
-  phi_ = phi_f(f, mpq)
-  return(phi_)
+  return(phi_f(f, mpq))
 }
