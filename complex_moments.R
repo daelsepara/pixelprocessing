@@ -27,7 +27,7 @@ flusser <- function(f_) {
 
 flusser_hu <- function(f_) {
   
-  phi_ = array(0,8)
+  phi_ = array(0,7)
   phi_f = flusser(f_)
   
   phi_[1] = phi_f[1]
