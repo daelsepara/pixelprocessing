@@ -22,7 +22,7 @@ process_freeman <- function(data_points, start_x, start_y, threshold, type) {
 		
 		for(dir_index in 1:8) {
 
-			direction = (start_dir + dir_index - 1) %% 8 + 1
+			direction = (start_dir + dir_index - 2) %% 8 + 1
 			next_x = x+dx[direction]; next_y = y+dy[direction]
 			
 			if (data_points[next_x,next_y]> threshold && freeman[next_x,next_y] == 0 && set_pix == FALSE || (next_x == start_x && next_y == start_y)) {
@@ -62,4 +62,9 @@ process_freeman <- function(data_points, start_x, start_y, threshold, type) {
 	if (type == 'vertices' && index > 1) {
 		return(vertices[1:index-1,])
 	}
+}
+
+fourier_descriptors <- function(vertices) {
+	fd_ = complex(real = vertices[,1], imaginary = vertices[,2])
+	return(fd_)
 }
