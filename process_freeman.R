@@ -62,9 +62,9 @@ process_freeman <- function(data_points, start_x, start_y, threshold, type) {
 	if (type == 'vertices' && index > 1) {
 		return(vertices[1:index-1,])
 	}
-}
-
-fourier_descriptors <- function(vertices) {
-	fd_ = complex(real = vertices[,1], imaginary = vertices[,2])
-	return(fd_)
+	
+	if (type == 'descriptor' && index > 1) {
+		fd_ = complex(real = vertices[,1], imaginary = vertices[,2])
+		return(fd_)
+	}
 }
