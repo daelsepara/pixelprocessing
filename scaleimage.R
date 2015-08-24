@@ -23,3 +23,11 @@ increase_background <- function(im, sf) {
 	newImage[1:size[1],1:size[2]] = im
 	return(newImage)
 }
+
+# translate image to new origin
+translate_image <- function(im, x, y) {
+	size = dim(im)
+	newImage = array(0,size*2)
+	newImage[x:(x+size[1]-1),y:(y+size[2]-1)] = im
+	return(newImage)
+}
