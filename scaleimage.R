@@ -27,7 +27,14 @@ increase_background <- function(im, sf) {
 # translate image to new origin
 translate_image <- function(im, x, y) {
 	size = dim(im)
-	newImage = array(0,size*2)
+	
+	sf = 2
+	
+	while (((x+size[1]-1) > sf*size[1]) || ((y+size[2]-1) > sf*size[2])) {
+		sf = sf + 1
+	}
+	
+	newImage = array(0,size*sf)
 	newImage[x:(x+size[1]-1),y:(y+size[2]-1)] = im
 	return(newImage)
 }
