@@ -51,20 +51,30 @@ process_freeman <- function(data_points, start_x, start_y, threshold, type) {
 		}
 	}
 	
+	# Freeman codes image
 	if (type == 'freeman') {
 		return(freeman)
 	}
 
+	# Freeman codes vector
 	if (type == 'vector' && index > 1) {
 		return(freeman_buffer[1:index-1])
 	}
 	
+	# vertices
 	if (type == 'vertices' && index > 1) {
 		return(vertices[1:index-1,])
 	}
 	
+	# Fourier descriptor
 	if (type == 'descriptor' && index > 1) {
 		fd_ = complex(real = vertices[,1], imaginary = vertices[,2])
 		return(fd_)
+	}
+	
+	# binary image of shape
+	if (type == 'boundary' && index > 1) {
+		freeman[vertices]<-1
+		return(freeman)
 	}
 }

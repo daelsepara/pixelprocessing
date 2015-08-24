@@ -3,7 +3,7 @@ R programs from Advanced Signal and Image Processing Class
 
 #### process_freeman
 
-Functions for computing the Freeman vector code and Fourier descriptors for a shape
+Functions for computing the Freeman vector codes (as image or vector), Fourier descriptors, shape vertices and boundary
 
 #### freeman_gradient
 
