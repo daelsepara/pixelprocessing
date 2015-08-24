@@ -22,6 +22,6 @@ Functions for computing the complex moments of an image and the rotation invaria
 
 Functions for magnifying an image n times (n is a positive integer), translating an image to a new origin, increasing image background
 
-#### sobel
+#### edge_detect
 
-Function for edge detection using Sobel Filter
+Functions for edge detection using Sobel, Sobel-Feldman Filters
