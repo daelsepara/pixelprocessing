@@ -20,4 +20,4 @@ Computes the complex moments of an image and the rotation invariant moments base
 
 #### scaleimage
 
-Magnify an image n times, where n is an integer multiple
+Functions to: magnify an image n times (where n is a positive integer), translate image to a new origin, increase image background
