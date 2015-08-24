@@ -21,3 +21,7 @@ Functions for computing the complex moments of an image and the rotation invaria
 #### scaleimage
 
 Functions for magnifying an image n times (n is a positive integer), translating an image to a new origin, increasing image background
+
+#### sobel
+
+Function for edge detection using Sobel Filter
