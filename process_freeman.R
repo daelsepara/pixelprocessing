@@ -25,7 +25,7 @@ process_freeman <- function(data_points, start_x, start_y, threshold, type) {
 			direction = (start_dir + dir_index - 2) %% 8 + 1
 			next_x = x+dx[direction]; next_y = y+dy[direction]
 			
-			if (data_points[next_x,next_y]> threshold && freeman[next_x,next_y] == 0 && set_pix == FALSE || (next_x == start_x && next_y == start_y)) {
+			if (data_points[next_x,next_y] > threshold && freeman[next_x,next_y] == 0 && set_pix == FALSE || (next_x == start_x && next_y == start_y)) {
 				
 				set_pix = TRUE
 				
