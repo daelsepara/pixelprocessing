@@ -1,4 +1,4 @@
-# generic edge-detection function, input filter
+# generic edge-detection function, input operator
 edge_detect <- function(f, xf, yf) {
 	size = dim(f)
 	edgeImage = array(0,size)
@@ -20,7 +20,7 @@ edge_detect <- function(f, xf, yf) {
 }
 
 sobel <- function(f) {
-	# Sobel filters
+	# Sobel operator
 	xf = array(0,c(3,3))
 	xf[,1] = c(-1, 0, 1)
 	xf[,2] = c(-2, 0, 2)
@@ -35,7 +35,7 @@ sobel <- function(f) {
 }
 
 sobel_feldman <- function(f) {
-	# Sobel-Feldman filters
+	# Sobel-Feldman operator
 	xf = array(0,c(3,3))
 	xf[,1] = c( 3, 10, 3)
 	xf[,2] = c( 0,  0, 0)
@@ -45,6 +45,21 @@ sobel_feldman <- function(f) {
 	yf[,1] = c( 3, 0, -3)
 	yf[,2] = c(10, 0,-10)
 	yf[,3] = c( 3, 0, -3)
+
+	return(edge_detect(f,xf,yf))
+}
+
+prewitt <- function(f) {
+	# Prewitt operator
+	xf = array(0,c(3,3))
+	xf[,1] = c(-1, 0, 1)
+	xf[,2] = c(-1, 0, 1)
+	xf[,3] = c(-1, 0, 1)
+
+	yf = array(0,c(3,3))
+	yf[,1] = c(-1,-1,-1)
+	yf[,2] = c( 0, 0, 0)
+	yf[,3] = c( 1, 1, 1)
 
 	return(edge_detect(f,xf,yf))
 }

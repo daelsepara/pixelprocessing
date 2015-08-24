@@ -24,4 +24,4 @@ Functions for magnifying an image n times (n is a positive integer), translating
 
 #### edge_detect
 
-Functions for edge detection using Sobel, Sobel-Feldman operators
+Functions for edge detection using Sobel, Sobel-Feldman, Prewitt operators
