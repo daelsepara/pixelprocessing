@@ -1,13 +1,7 @@
 cpq <- function(f_, p_, q_) {
 
   size = dim(f_)
-  xyp = array(complex(real = 0, imaginary = 0), size)
-
-  #create complex fields (x+iy) and (x-iy)
-  for (j in 1:size[2]) {
-    xyp[,j] = array(1:size[1])+complex(imaginary =  j)
-  }
-  
+  xyp = outer(array(1:size[1]),array(1:size[2])*complex(imaginary=1),FUN='+')
   xyq = Conj(xyp)
   
   return(sum(xyp^p_*xyq^q_*f_))
