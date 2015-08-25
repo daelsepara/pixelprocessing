@@ -2,10 +2,10 @@ mpq <- function(f, p_, q_) {
 	
 	size = dim(f)
 	
-	x = array(1:size[1])
-	y = array(1:size[2])
+	x = array(1:size[2])
+	y = array(1:size[1])
 	
-	return(sum(outer(x^p_,y^q_)*f))
+	return(sum(outer(y^q_,x^p_)*f))
 }
 
 upq <- function(f, p_, q_) {
@@ -16,10 +16,10 @@ upq <- function(f, p_, q_) {
 	
 	size = dim(f)
 	
-	x = array(1:size[1])
-	y = array(1:size[2])
+	x = array(1:size[2])
+	y = array(1:size[1])
 
-	return(sum(outer((x-x_)^p_,(y-y_)^q_)*f))
+	return(sum(outer((y-y_)^q_,(x-x_)^p_)*f))
 }
 
 npq <- function(f, p_, q_) {

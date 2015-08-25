@@ -2,14 +2,14 @@
 magnify_image <- function(im, sf) {
 	
 	size = dim(im)
-	x = size[1]
-	y = size[2]
+	y = size[1]
+	x = size[2]
 	
 	magnifiedImage = array(0,size*sf)
 	
 	for (j in 1:y) {
 		for (i in 1:x) {
-			magnifiedImage[(sf*(i-1)+1):(sf*i),(sf*(j-1)+1):(sf*j)] = im[i,j]
+			magnifiedImage[(sf*(j-1)+1):(sf*j),(sf*(i-1)+1):(sf*i)] = im[j,i]
 		}
 	}
 	
@@ -28,14 +28,14 @@ increase_background <- function(im, sf) {
 translate_image <- function(im, x, y) {
 
 	size = dim(im)
-	sf = 2;	sx = size[1]-1;	sy = size[2]-1
+	sf = 2;	sx = size[2]-1;	sy = size[1]-1
 	
-	while (((x+sx) > sf*size[1]) || ((y+sy) > sf*size[2])) {
+	while (((x+sx) > sf*size[2]) || ((y+sy) > sf*size[1])) {
 		sf = sf + 1
 	}
 	
 	newImage = array(0,size*sf)
-	newImage[x:(x+sx),y:(y+sy)] = im
+	newImage[y:(y+sy),x:(x+sx)] = im
 	
 	return(newImage)
 }

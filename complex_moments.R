@@ -1,7 +1,7 @@
 cpq <- function(f_, p_, q_) {
 
   size = dim(f_)
-  xyp = outer(array(1:size[1]),array(1:size[2])*complex(imaginary=1),FUN='+')
+  xyp = outer(array(1:size[1])*complex(imaginary=1),array(1:size[2]),FUN='+')
   xyq = Conj(xyp)
   
   return(sum(xyp^p_*xyq^q_*f_))
