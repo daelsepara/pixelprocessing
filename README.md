@@ -18,6 +18,10 @@ the paper by Hu (1962)
 
 Functions for computing the complex moments of an image and the rotation invariant moments based on the work of Flusser and Suk
 
+#### hu_moments
+
+Alternative computation of Hu invariant moments
+
 #### scaleimage
 
 Functions for magnifying an image n times (n is a positive integer), translating an image to a new origin, increasing image background
