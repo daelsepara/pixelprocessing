@@ -73,6 +73,8 @@ phi_f <- function(f, g) {
   
   phi_[7] = g32103 * g3012 * g301232103 + g31230 * g2103 * g33012221032
   
+  phi_[1:6] = abs(phi_(1:6))
+  
   return(phi_)
 }
 

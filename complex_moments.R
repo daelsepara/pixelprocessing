@@ -1,10 +1,7 @@
 cpq <- function(f_, p_, q_) {
-
   size = dim(f_)
   xyp = outer(array(1:size[1])*complex(imaginary=1),array(1:size[2]),FUN='+')
-  xyq = Conj(xyp)
-  
-  return(sum(xyp^p_*xyq^q_*f_))
+  return(sum(xyp^p_*Conj(xyp)^q_*f_))
 }
 
 flusser <- function(f_) {
@@ -32,5 +29,5 @@ flusser_hu <- function(f_) {
   phi_[6] = Re(phi_f[3])
   phi_[7] = Im(phi_f[4])
   
-  return(phi_)
+  return(abs(phi_))
 }
