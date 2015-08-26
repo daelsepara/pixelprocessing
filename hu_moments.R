@@ -37,5 +37,7 @@ hu_moments <- function(f) {
 	phi[6] = (eta20-eta02)*((eta30+eta12)^2-(eta21+eta03)^2)+4*eta11*(eta30+eta12)*(eta21+eta03)
 	phi[7] = (3*eta21-eta03)*(eta30+eta12)*((eta30+eta12)^2-3*(eta21+eta03)^2)+(3*eta12-eta30)*(eta21+eta03)*(3*(eta30+eta12)^2-(eta21+eta03)^2)
 	
+	phi[1:6] = abs(phi[1:6])
+	
 	return(phi)
 }
