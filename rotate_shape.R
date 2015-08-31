@@ -5,8 +5,8 @@ rotate_shape <- function(vertices, degree_angle, origin_x, origin_y) {
 
   # center shape about origin
   theta_ = degree_angle*pi/180.0
-  x_ = vertices[,1] - mean(vertices[,1])
-  y_ = vertices[,2] - mean(vertices[,2])
+  x_ = vertices[,1] - origin_x
+  y_ = vertices[,2] - origin_y
   
   # perform rotation
   rotated[,1] = x_*cos(theta_) - y_*sin(theta_)
