@@ -75,10 +75,7 @@ process_freeman <- function(data_points, start_y, start_x, threshold, type) {
 	
 	# binary image of shape
 	if (type == 'boundary' && index > 1) {
-	  v_ = array(0,dim(vertices))
-	  v_[,1] = vertices[,2]
-	  v_[,2] = vertices[,1]
-		freeman[v_]<-1
+		freeman[vertices[,2:1]]<-1
 		return(freeman)
 	}
 }
