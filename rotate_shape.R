@@ -9,8 +9,8 @@ rotate_shape <- function(vertices, degree_angle, origin_x, origin_y) {
   y_ = vertices[,2] - origin_y
   
   # perform rotation
-  rotated[,1] = x_*cos(theta_) - y_*sin(theta_)
-  rotated[,2] = x_*sin(theta_) - y_*cos(theta_)
+  rotated_[,1] = x_*cos(theta_) - y_*sin(theta_)
+  rotated_[,2] = x_*sin(theta_) + y_*cos(theta_)
   
-  return(rotated)
+  return(rotated_)
 }
