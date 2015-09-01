@@ -1,33 +1,34 @@
+# simplified computation of Flusser-Suk-Zitova rotational invariant complex moments
+# adapted from: http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/FISHER/MOMINV/
+
 cpq <- function(f_, p_, q_) {
   size = dim(f_)
-  xyp = outer(array(1:size[1])*complex(imaginary=1),array(1:size[2]),FUN='+')
+  
+  # compute for centralized complex moment
+  x_ = array(1:size[2]);
+  y_ = array(1:size[1]);
+  xyp = outer((y_-mean(y_))*complex(imaginary=1),x_-mean(x_),FUN='+')
+  
   return(sum(xyp^p_*Conj(xyp)^q_*f_))
 }
 
 flusser <- function(f_) {
   
-  phi_f = array(0,4)
+  phi_f = array(0,6)
   
-  phi_f[1] = cpq(f_,1,1)
-  phi_f[2] = cpq(f_,2,1)*cpq(f_,1,2)
-  phi_f[3] = cpq(f_,2,0)*(cpq(f_,1,2)^2)
-  phi_f[4] = cpq(f_,3,0)*(cpq(f_,1,2)^3)
+  A = sum(f_)
+  s11 = cpq(f_,1,1)/A^2
+  s20 = cpq(f_,2,0)/A^2
+  s21 = cpq(f_,2,1)/A^2.5
+  s12 = cpq(f_,1,2)/A^2.5
+  s30 = cpq(f_,3,0)/A^2.5
+  
+  phi_f[1] = Re(s11)
+  phi_f[2] = Re(1000*s21*s12)
+  phi_f[3] = 10000*Re(s20*s12*s12)
+  phi_f[4] = 10000*Im(s20*s12*s12)
+  phi_f[5] = 1000000*Re(s30*s12*s12*s12)
+  phi_f[6] = 1000000*Im(s30*s12*s12*s12)
   
   return(phi_f)
-}
-
-flusser_hu <- function(f_) {
-  
-  phi_ = array(0,7)
-  phi_f = flusser(f_)
-  
-  phi_[1] = phi_f[1]
-  phi_[2] = Mod(phi_f[3])^2/phi_f[2]^2
-  phi_[3] = Mod(phi_f[4])^2/phi_f[2]^3
-  phi_[4] = phi_f[2]
-  phi_[5] = Re(phi_f[4])
-  phi_[6] = Re(phi_f[3])
-  phi_[7] = Im(phi_f[4])
-  
-  return(abs(phi_))
 }

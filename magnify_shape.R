@@ -2,7 +2,7 @@ magnify_shape <- function(f, sf) {
 
 	# assumes: 
 	# 
-	# 1) f is a 3-column vector describing vertices x,y and gray level
+	# 1) f is a 3-column vector describing vertices x,y and binary values 0/1
 	# 2) consecutive vertices in f are connected to each other
 
 	size = dim(f);

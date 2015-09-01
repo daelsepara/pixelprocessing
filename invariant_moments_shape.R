@@ -1,5 +1,6 @@
 mpq_xy <- function(f, p_, q_) {
-	# assumes f is a 3-column matrix describing x,y,gray-level values of a shape
+	
+	# assumes f is a 3-column matrix describing (x,y,binary values 0/1) of a shape
     return(sum(f[,1]^p_*f[,2]^q_*f[,3]))
 }
 
@@ -72,20 +73,28 @@ phi_xy <- function(f) {
   return(phi_fxy(f, npq_xy))
 }
 
-cpq_xy <- function(f_, p_, q_) {
-  size = dim(f_)
-  xy = complex(real = f_[,1], imaginary = f_[,2])
-  return(sum(xy^p_*Conj(xy)^q_*f_))
+cpq_xy <- function(f, p_, q_) {
+  xy = complex(real = f[,1]-mean(f[,1]), imaginary = f[,2]-mean(f[,2]))
+  return(sum(xy^p_*Conj(xy)^q_*f))
 }
 
-flusser_xy <- function(f_) {
+flusser_xy <- function(f) {
   
-  phi_f = array(0,4)
+  phi_f = array(0,6)
   
-  phi_f[1] = cpq_xy(f_,1,1)
-  phi_f[2] = cpq_xy(f_,2,1)*cpq_xy(f_,1,2)
-  phi_f[3] = cpq_xy(f_,2,0)*cpq_xy(f_,1,2)^2
-  phi_f[4] = cpq_xy(f_,3,0)*cpq_xy(f_,1,2)^3
+  A = sum(f)
+  s11 = cpq_xy(f,1,1)/A^2
+  s20 = cpq_xy(f,2,0)/A^2
+  s21 = cpq_xy(f,2,1)/A^2.5
+  s12 = cpq_xy(f,1,2)/A^2.5
+  s30 = cpq_xy(f,3,0)/A^2.5
+  
+  phi_f[1] = Re(s11)
+  phi_f[2] = Re(1000*s21*s12)
+  phi_f[3] = 10000*Re(s20*s12*s12)
+  phi_f[4] = 10000*Im(s20*s12*s12)
+  phi_f[5] = 1000000*Re(s30*s12*s12*s12)
+  phi_f[6] = 1000000*Im(s30*s12*s12*s12)
   
   return(phi_f)
 }

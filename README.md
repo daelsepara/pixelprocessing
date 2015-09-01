@@ -3,33 +3,44 @@ R programs from Advanced Signal and Image Processing Class
 
 #### process_freeman
 
-Functions for computing the Freeman vector codes (as image or vector), Fourier descriptors, shape vertices and boundary
+Determine the Freeman vector codes (as an image or a vector), Fourier descriptors, shape vertices and boundary
 
 #### freeman_gradient
 
-Functions for computing the gradient and running sums from a Freeman vector
+Compute for the gradient and running sums from a Freeman vector
+
+#### scaleimage
+
+Magnify an image n times (n is a positive integer), translating an image to a new origin, increasing image background
+
+#### magnify_shape
+
+Magnify a shape n times (n is a positive integer)
+
+#### edge_detect
+
+Edge detection using Sobel, Sobel-Feldman, Prewitt operators
+
+#### rotate_shape
+
+Rotate shape about an origin
 
 #### invariant_moments
 
-Functions for computing the invariant and normalized central moments of an image based on
-the paper by Hu (1962)
+Computing the invariant and normalized central moments of an image based on
+the work of Hu (1962)
 
 #### complex_moments
 
-Functions for computing the complex moments of an image and the rotation invariant moments based on the work of Flusser and Suk
+Compute for the complex rotation invariant moments based on the work of Flusser, Suk, Zitova
 
 #### hu_moments
 
 Alternative computation of Hu invariant moments
 
-#### scaleimage
+#### invariant_moments_shape
 
-Functions for magnifying an image n times (n is a positive integer), translating an image to a new origin, increasing image background
-
-#### edge_detect
-
-Functions for edge detection using Sobel, Sobel-Feldman, Prewitt operators
-
+Compute for  the invariant and normalized central moments of a shape
 
 #### lbp
 
