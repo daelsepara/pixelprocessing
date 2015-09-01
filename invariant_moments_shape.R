@@ -1,5 +1,5 @@
 mpq_xy <- function(f, p_, q_) {
-  # assumes f is a 3-column matrix describing x,y,gray-level values of a shape
+	# assumes f is a 3-column matrix describing x,y,gray-level values of a shape
     return(sum(f[,1]^p_*f[,2]^q_*f[,3]))
 }
 
@@ -70,4 +70,22 @@ phi_fxy <- function(f, g) {
 
 phi_xy <- function(f) {
   return(phi_fxy(f, npq_xy))
+}
+
+cpq_xy <- function(f_, p_, q_) {
+  size = dim(f_)
+  xy = complex(real = f_[,1], imaginary = f_[,2])
+  return(sum(xy^p_*Conj(xy)^q_*f_))
+}
+
+flusser_xy <- function(f_) {
+  
+  phi_f = array(0,4)
+  
+  phi_f[1] = cpq_xy(f_,1,1)
+  phi_f[2] = cpq_xy(f_,2,1)*cpq_xy(f_,1,2)
+  phi_f[3] = cpq_xy(f_,2,0)*cpq_xy(f_,1,2)^2
+  phi_f[4] = cpq_xy(f_,3,0)*cpq_xy(f_,1,2)^3
+  
+  return(phi_f)
 }
