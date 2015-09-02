@@ -15,7 +15,7 @@ Compute for the gradient and running sums from a Freeman vector
 
 #### magnify_shape
 
-Magnify a shape n times (n is a positive integer)
+Magnify a shape
 
 #### rotate_shape
 
@@ -29,7 +29,9 @@ Compute for  the invariant and normalized central moments of a shape
 
 #### scaleimage
 
-Magnify an image n times (n is a positive integer), translating an image to a new origin, increasing image background
+* Magnify an image
+* translate image to a new origin
+* increase image background, i.e. zero padding
 
 #### edge_detect
 
