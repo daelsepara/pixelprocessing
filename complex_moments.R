@@ -12,11 +12,20 @@ cpq <- function(f_, p_, q_) {
   return(sum(xyp^p_*Conj(xyp)^q_*f_))
 }
 
+spq <- function(f_, p_, q_) {
+	
+	A = sum(f_)
+	g = 1 + (p_+ q_)/2
+	
+	return(cpq(f_,p_,q_)/A^g)
+}
+
 flusser <- function(f_) {
   
   phi_f = array(0,6)
   
   A = sum(f_)
+   
   s11 = cpq(f_,1,1)/A^2
   s20 = cpq(f_,2,0)/A^2
   s21 = cpq(f_,2,1)/A^2.5
