@@ -20,6 +20,7 @@ npq_xy <- function(f, p_, q_) {
   return(upq_xy(f,p_,q_)/(upq_xy(f,0,0)^g))
 }
 
+# this just identical to the function phi_f at Shape/invariant_moments
 phi_fxy <- function(f, g) {
   
   phi_ = array(0,7)
