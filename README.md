@@ -3,7 +3,7 @@ R programs from Advanced Signal and Image Processing Class
 
 Scripts are grouped according to three categories: Shape, Image, Texture
 
-# Shape/
+# Shape
 
 #### process_freeman
 
@@ -25,7 +25,7 @@ Rotate shape about an origin
 
 Compute for  the invariant and normalized central moments of a shape
 
-# Image/
+# Image
 
 #### scaleimage
 
@@ -48,7 +48,7 @@ Alternative computation of Hu invariant moments
 
 Compute for the complex rotation invariant moments based on the work of Flusser, Suk, Zitova
 
-# Texture/
+# Texture
 
 #### lbp
 
