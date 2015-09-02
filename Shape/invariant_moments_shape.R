@@ -82,7 +82,7 @@ flusser_xy <- function(f) {
   
   phi_f = array(0,6)
   
-  A = sum(f)
+  A = sum(f[,3])
   s11 = cpq_xy(f,1,1)/A^2
   s20 = cpq_xy(f,2,0)/A^2
   s21 = cpq_xy(f,2,1)/A^2.5
