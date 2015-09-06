@@ -14,12 +14,9 @@ lbp <- function(f) {
 	for(y in 2:(dim(f)[1]-1)) {
 		for(x in 2:(dim(f)[2]-1)) {
 		
-			# compute gradients
-			gn = f[(y-1):(y+1),(x-1):(x+1)]
-			g0 = array(f[y,x],c(3,3))
-			
 			# apply threshold
-			i = which((gn - g0) >=0)
+			gn = as.vector(f[(y-1):(y+1),(x-1):(x+1)])
+			i = which(gn >= f[y,x])
 			
 			# compute LBP based on weights
 			lbp[y,x] = sum(w_[i])
