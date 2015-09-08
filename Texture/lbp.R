@@ -11,8 +11,10 @@ lbp <- function(f) {
 	
 	lbp = array(0,dim(f))
 	
-	for(y in 2:(dim(f)[1]-1)) {
-		for(x in 2:(dim(f)[2]-1)) {
+	size = dim(f)
+	
+	for(y in 2:(size[1]-1)) {
+		for(x in 2:(size[2]-1)) {
 		
 			# apply threshold
 			gn = as.vector(f[(y-1):(y+1),(x-1):(x+1)])
@@ -23,6 +25,6 @@ lbp <- function(f) {
 		}
 	}
 	
-	return(lbp)
+	return(lbp[2:(size[1]-1),2:(size[2]-1)])
 }
 
