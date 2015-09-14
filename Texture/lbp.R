@@ -64,3 +64,29 @@ u_lbp <- function(lbp_) {
 	
 	return(U_)
 }
+
+lbp_hist <- function(lbp_) {
+
+	x_ = c(0, 1, 2, 3, 4, 6, 7, 8, 12, 14, 15, 16, 24, 28, 30, 31, 32, 48, 56, 60, 62, 63, 64, 96, 112, 120, 124, 126, 127, 128, 129, 131, 135, 143, 159, 191, 192, 193, 195, 199, 207, 223, 224, 225, 227, 231, 239, 240, 241, 243, 247, 248, 249, 251, 252, 253, 254, 255)
+	
+	hist_ = array(0, 59)
+	
+	for (i in 1:58) {
+		hist_[i] = length(which(lbp_ == x_[i]))
+	}
+	
+	hist_[59] = length(which(!(lbp_ %in% x_)))
+	
+	return(hist_)
+}
+
+lbp_histu <- function(u_) {
+
+	hist_ = array(0, 8)
+	
+	for (i in 0:7) {
+		hist_[i] = length(which(u_ == i))
+	}
+	
+	return(hist_)
+}
