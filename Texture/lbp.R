@@ -28,3 +28,39 @@ lbp <- function(f) {
 	return(lbp[2:(size[1]-1),2:(size[2]-1)])
 }
 
+bit_transitions <- function(i_) {
+
+	dir_ = bitwAnd(i_, 1)
+	
+	transitions = 0
+	
+	for (i in 1:7) {
+		
+		dir_n = bitwAnd(bitwShiftR(i_, i), 1)
+		
+		if (dir_n != dir_) {
+			transitions = transitions + 1
+			dir_ = dir_n
+		}
+	}
+	
+	return(transitions)
+}
+
+u_lbp <- function(lbp_) {
+	
+	size = dim(lbp_)
+	
+	U_ = array(0,size)
+	
+	# count number of bit transitions in a table via lookup table
+	for(y in 1:size[1]) {
+		for(x in 1:size[2]) {
+		
+			# compute number of bit transitions
+			U_[y,x] = bit_transitions(lbp_[y,x])
+		}
+	}
+	
+	return(U_)
+}
