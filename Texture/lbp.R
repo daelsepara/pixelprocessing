@@ -151,3 +151,38 @@ lbp_hist <- function(ulbp_) {
   return(hist_)
   
 }
+
+lbp_contrast <- function(f) {
+  
+  lbp_c = array(0,dim(f))
+  
+  size = dim(f)
+  
+  for(y in 2:(size[1]-1)) {
+    for(x in 2:(size[2]-1)) {
+      
+      gn = as.vector(f[(y-1):(y+1),(x-1):(x+1)])
+      
+      # remove center pixel
+      gn = gn[-5]
+      
+      i = which(gn >= f[y,x])
+      j = !(1:8 %in% i)
+      
+      # compute LBP contrast
+      c_ = 0
+      
+      if (length(i) > 0) {
+        c_ = c_ + sum(gn[i])/length(i)
+      }
+      
+      if (length(j) > 0) {
+        c_ = c_ - sum(gn[j])/length(j)
+      }
+      
+      lbp_c[y,x] = c_
+    }
+  }
+  
+  return(lbp_c[2:(size[1]-1),2:(size[2]-1)])
+}
