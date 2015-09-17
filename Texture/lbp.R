@@ -139,3 +139,15 @@ var_pr <- function(f) {
   return(var_[2:(size[1]-1),2:(size[2]-1)])
 
 }
+
+lbp_hist <- function(ulbp_) {
+  
+  hist_ = array(0, 10)
+  
+  for (i in 0:9) {
+    hist_[i+1] = length(which(ulbp_ == i))
+  }
+  
+  return(hist_)
+  
+}
