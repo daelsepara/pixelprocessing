@@ -15,7 +15,7 @@ lbp <- function(f) {
 	
 	for(y in 2:(size[1]-1)) {
 		for(x in 2:(size[2]-1)) {
-		
+		  
 			# apply threshold
 			gn = as.vector(f[(y-1):(y+1),(x-1):(x+1)])
 			i = which(gn >= f[y,x])
@@ -47,46 +47,95 @@ bit_transitions <- function(i_) {
 	return(transitions)
 }
 
-u_lbp <- function(lbp_) {
+u_lbp <- function(f) {
 	
-	size = dim(lbp_)
-	
+	size = dim(f)
+	w_ = c(1, 128, 64, 2, 0, 32, 4, 8, 16)
 	U_ = array(0,size)
 	
-	# count number of bit transitions in a table via lookup table
-	for(y in 1:size[1]) {
-		for(x in 1:size[2]) {
+	for(y in 2:(size[1]-1)) {
+		for(x in 2:(size[2]-1)) {
 		
-			# compute number of bit transitions
-			U_[y,x] = bit_transitions(lbp_[y,x])
+		  gn = as.vector(f[(y-1):(y+1),(x-1):(x+1)])
+		  i = which(gn >= f[y,x])
+		  
+		  # compute LBP based on weights
+		  lbp_ = sum(w_[i])
+			
+		  # compute LBP_PR_RUI2
+			if (bit_transitions(lbp_) <= 2) {
+		    U_[y,x] = length(i)
+			} else {
+			  U_[y,x]= 9
+			}
 		}
 	}
 	
-	return(U_)
+	return(U_[2:(size[1]-1),2:(size[2]-1)])
 }
 
-lbp_hist <- function(lbp_) {
+u_npr <- function(f) {
+  
+  size = dim(f)
+  unpr = array(0, size)
+  
+  s_ = array(0, 8)
+  
+  for (y in 2:(size[1]-1)) {
+    for (x in 2:(size[2]-1)) {
+      
+      # compute LBP_PR_RUI2
+      s_[1] = f[y-1, x-1]
+      s_[2] = f[y-1, x]
+      s_[3] = f[y-1, x+1]
+      s_[4] = f[y, x+1]
+      s_[5] = f[y+1, x+1]
+      s_[6] = f[y+1, x]
+      s_[7] = f[y+1, x-1]
+      s_[8] = f[y, x-1]
+      
+      s_ = s_ - f[y,x]
+      
+      s_[which(s_ >= 0)] <- 1
+      s_[which(s_  < 0)] <- 0
 
-	x_ = c(0, 1, 2, 3, 4, 6, 7, 8, 12, 14, 15, 16, 24, 28, 30, 31, 32, 48, 56, 60, 62, 63, 64, 96, 112, 120, 124, 126, 127, 128, 129, 131, 135, 143, 159, 191, 192, 193, 195, 199, 207, 223, 224, 225, 227, 231, 239, 240, 241, 243, 247, 248, 249, 251, 252, 253, 254, 255)
-	
-	hist_ = array(0, 59)
-	
-	for (i in 1:58) {
-		hist_[i] = length(which(lbp_ == x_[i]))
-	}
-	
-	hist_[59] = length(which(!(lbp_ %in% x_)))
-	
-	return(hist_)
+      ss = 0
+      
+      for(ii in 2:8) {
+        ss = ss + abs(s_[ii] - s_[ii-1])
+      }
+      
+      unpr_ = abs(s_[8] - s_[1]) + ss
+      
+      if(unpr_ <= 2) {
+        unpr[y,x] = sum(s_)
+      } else {
+        unpr[y,x] = 9
+      }
+    }
+  }
+  
+  return(unpr[2:(size[1]-1),2:(size[2]-1)])
 }
 
-lbp_histu <- function(u_) {
+var_pr <- function(f) {
+  
+  size = dim(f)
+  var_ = array(0,size)
+  
+  for(y in 2:(size[1]-1)) {
+    for(x in 2:(size[2]-1)) {
+      
+      gp = as.vector(f[(y-1):(y+1),(x-1):(x+1)])
+      
+      # remove g_c
+      gp = gp[-5]
+      u_ = mean(gp)
+      
+      var_[y,x] = mean((gp-u_)^2)
+    }
+  }
+  
+  return(var_[2:(size[1]-1),2:(size[2]-1)])
 
-	hist_ = array(0, 8)
-	
-	for (i in 0:7) {
-		hist_[i] = length(which(u_ == i))
-	}
-	
-	return(hist_)
 }
