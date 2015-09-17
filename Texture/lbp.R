@@ -34,10 +34,12 @@ bit_transitions <- function(i_) {
 	
 	transitions = 0
 	
+	# count number of bit transitions
 	for (i in 1:7) {
 		
 		dir_n = bitwAnd(bitwShiftR(i_, i), 1)
-		
+
+		# check for bit-transitions 0 -> 1 or 1 -> 0
 		if (dir_n != dir_) {
 			transitions = transitions + 1
 			dir_ = dir_n
@@ -50,7 +52,16 @@ bit_transitions <- function(i_) {
 u_lbp <- function(f) {
 	
 	size = dim(f)
+	
+	# weights of neighboring pixels
+	#
+	#   1|  2|  4
+	# ------------
+	# 128|  0|  8
+	# ------------
+	#  64| 32| 16
 	w_ = c(1, 128, 64, 2, 0, 32, 4, 8, 16)
+	
 	U_ = array(0,size)
 	
 	for(y in 2:(size[1]-1)) {
@@ -62,7 +73,7 @@ u_lbp <- function(f) {
 		  # compute LBP based on weights
 		  lbp_ = sum(w_[i])
 			
-		  # compute LBP_PR_RUI2
+		  # compute LBP_P,R^RUI2
 			if (bit_transitions(lbp_) <= 2) {
 		    U_[y,x] = length(i)
 			} else {
@@ -84,7 +95,7 @@ u_npr <- function(f) {
   for (y in 2:(size[1]-1)) {
     for (x in 2:(size[2]-1)) {
       
-      # compute LBP_PR_RUI2
+      # count number of bit transitions
       s_[1] = f[y-1, x-1]
       s_[2] = f[y-1, x]
       s_[3] = f[y-1, x+1]
@@ -99,15 +110,14 @@ u_npr <- function(f) {
       s_[which(s_ >= 0)] <- 1
       s_[which(s_  < 0)] <- 0
 
-      ss = 0
+      ss = abs(s_[8] - s_[1])
       
       for(ii in 2:8) {
         ss = ss + abs(s_[ii] - s_[ii-1])
       }
       
-      unpr_ = abs(s_[8] - s_[1]) + ss
-      
-      if(unpr_ <= 2) {
+      # compute LBP_P,R^RUI2
+      if(ss <= 2) {
         unpr[y,x] = sum(s_)
       } else {
         unpr[y,x] = 9
@@ -128,10 +138,12 @@ var_pr <- function(f) {
       
       gp = as.vector(f[(y-1):(y+1),(x-1):(x+1)])
       
-      # remove g_c
+      # remove center pixel
       gp = gp[-5]
-      u_ = mean(gp)
       
+      u_ = mean(gp)
+
+      # compute VAR_P,R      
       var_[y,x] = mean((gp-u_)^2)
     }
   }
@@ -143,7 +155,8 @@ var_pr <- function(f) {
 lbp_hist <- function(ulbp_) {
   
   hist_ = array(0, 10)
-  
+
+  # Determine LBP_P,R^RUI2 histogram
   for (i in 0:9) {
     hist_[i+1] = length(which(ulbp_ == i))
   }
