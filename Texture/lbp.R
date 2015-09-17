@@ -60,7 +60,7 @@ u_lbp <- function(f) {
 	# 128|  0|  8
 	# ------------
 	#  64| 32| 16
-	w_ = c(1, 128, 64, 2, 0, 32, 4, 8, 16)
+	w_ = c(1, 128, 64, 2, 32, 4, 8, 16)
 	
 	U_ = array(0,size)
 	
@@ -68,8 +68,12 @@ u_lbp <- function(f) {
 		for(x in 2:(size[2]-1)) {
 		
 		  gn = as.vector(f[(y-1):(y+1),(x-1):(x+1)])
-		  i = which(gn >= f[y,x])
 		  
+		  # remove center pixel
+		  gn = gn[-5]
+		  
+		  i = which(gn >= f[y,x])
+
 		  # compute LBP based on weights
 		  lbp_ = sum(w_[i])
 			
