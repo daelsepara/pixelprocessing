@@ -156,30 +156,27 @@ var_pr <- function(f) {
 
 }
 
-lbp_hist <- function(ulbp_) {
+hist_func <- function(img_, range_) {
   
-  hist_ = array(0, 10)
-
-  # Determine LBP_P,R^RUI2 histogram
-  for (i in 0:9) {
-    hist_[i+1] = length(which(ulbp_ == i))
+  hist_ = array(0, max(range_)+1)
+  
+  for (i in range_) {
+    hist_[i+1] = length(which(img_ == i))
   }
   
   return(hist_)
+}
+
+lbp_hist <- function(ulbp_) {
   
+  # Determine LBP_P,R^RUI2 histogram
+  return(hist_func(ulbp_,0:9))
 }
 
 img_hist <- function(lbp_) {
   
-  hist_ = array(0, 256)
-
   # Determine image histogram
-  for (i in 0:255) {
-    hist_[i+1] = length(which(lbp_ == i))
-  }
-  
-  return(hist_)
-  
+  return(hist_func(lbp_,0:255))
 }
 
 lbp_contrast <- function(f) {
