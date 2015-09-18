@@ -169,6 +169,19 @@ lbp_hist <- function(ulbp_) {
   
 }
 
+img_hist <- function(lbp_) {
+  
+  hist_ = array(0, 256)
+
+  # Determine image histogram
+  for (i in 0:255) {
+    hist_[i+1] = length(which(lbp_ == i))
+  }
+  
+  return(hist_)
+  
+}
+
 lbp_contrast <- function(f) {
   
   lbp_c = array(0,dim(f))
