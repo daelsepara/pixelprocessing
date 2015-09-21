@@ -5,13 +5,10 @@ ncc <- function(rgb_) {
 	rg_ = array(0, c(size[1], size[2], 2))
 	
 	for (y in 1:size[1]) {
-		for (x in 1:size[2]) {
-			
-			i_ = sum(rgb_[y, x,])
-			
-			rg_[y, x, 1] = rgb_[y, x, 1]/i_
-			rg_[y, x, 2] = rgb_[y, x, 2]/i_
-		}
+		i_ = rgb_[y, , 1] + rgb_[y, , 2] + rgb_[y, , 3]
+		
+		rg_[y, , 1] = rgb_[y, , 1]/i_
+		rg_[y, , 2] = rgb_[y, , 2]/i_
 	}
 	
 	return(rg_)
