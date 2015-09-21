@@ -1,7 +1,7 @@
 # pixelprocessing
 R programs from Advanced Signal and Image Processing Class
 
-Scripts are grouped according to three categories: Shape, Image, Texture
+Scripts are grouped according to these categories: Shape, Image, Texture, Color
 
 # Shape
 
@@ -55,3 +55,9 @@ Compute for the complex rotation invariant moments based on the work of Flusser,
 #### lbp
 
 Function to compute the LBP of an image at each pixel, excluding the ones at the boundaries
+
+# Color
+
+#### ncc
+
+Function to compute for the normalized chromaticity colorspace and generation of 2D color histograms
