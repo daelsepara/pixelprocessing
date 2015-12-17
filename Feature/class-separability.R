@@ -87,7 +87,7 @@ SJ1 <- function(x) {
 
 SJ2 <- function(x) {
   
-  return(det(Smixture(x))/det(Swithin(x)))
+  return(det(solve(Swithin(x))%*%Smixture(x)))
 }
 
 SJ3 <- function(x) {
