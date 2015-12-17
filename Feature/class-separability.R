@@ -72,7 +72,6 @@ Swithin <- function(x) {
   return(Sw)
 }
 
-# total scatter
 Smixture <- function(x) {
   
   return(Sbetween(x) + Swithin(x))
@@ -95,6 +94,6 @@ SJ3 <- function(x) {
   
   require(psych)
   
-  return(tr(solve(Swithin(x3))%*%Smixture(x3)))
+  return(tr(solve(Swithin(x))%*%Smixture(x)))
 }
 
