@@ -32,7 +32,7 @@ Sbetween <- function(x) {
     
     diff = u_ - u0
     
-    Sb = Sb + diff %*% t(diff)
+    Sb = Sb + diff %*% t(diff)/c_
   }
   
   return(Sb)
@@ -72,6 +72,7 @@ Swithin <- function(x) {
   return(Sw)
 }
 
+# total scatter
 Smixture <- function(x) {
   
   return(Sbetween(x) + Swithin(x))
