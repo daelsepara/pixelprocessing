@@ -1,4 +1,4 @@
-em_alg_function <- function(x, m, s, Pa, e_min) {
+em_alg_function <- function(x, m, s, Pa, e_min, iter_max = 1000) {
 
 	##########################################################################
 	# FUNCTION
@@ -57,7 +57,7 @@ em_alg_function <- function(x, m, s, Pa, e_min) {
 	
 	iter = 0
 	
-	while (e > e_min) {
+	while (e > e_min && iter <= iter_max) {
 
 		iter = iter+1
 		
