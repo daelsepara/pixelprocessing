@@ -44,6 +44,8 @@ plot_data <- function (X, y, m, h = NULL, f = NULL) {
 		if (is.null(f)) {
 			if (!is.null(h)) {
 				dev.set(h)
+			} else {
+				dev.cur()
 			}
 		} else {
 			if (!is.null(f)) {
