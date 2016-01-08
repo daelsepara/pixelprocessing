@@ -22,16 +22,15 @@ boolean_gate <- function(output = c(0, 1, 1, 0)) {
 	booldata[3, ] = c(1, 0)
 	booldata[4, ] = c(1, 1)
 	
-	# XOR operation
 	return(list('patterns' = booldata, 'output' = output))
 }
 
 # feed-forward operation
 nnet_forward <- function(x, w_ji, w_kj) {
 	
-	# activation function with bias = 1
-	z_j = h_func(x %*% w_ji + 1)
-	y_k = h_func(z_j %*% w_kj + 1)
+	# activation function with bias = 1.0
+	z_j = h_func(x %*% w_ji + 1.0)
+	y_k = h_func(z_j %*% w_kj + 1.0)
 	
 	return(list('y_k' = y_k, 'z_j' = z_j))
 }
@@ -63,6 +62,7 @@ nnet_train <-function(maxiter = 1000000, learning_rate = 0.1, tol = 10^(-3), out
 	t_k = boolean_op$output
 	
 	ii = dim(x)
+	
 	Error = 4;
 	
 	# intialize weights
@@ -79,6 +79,7 @@ nnet_train <-function(maxiter = 1000000, learning_rate = 0.1, tol = 10^(-3), out
 	convergence = numeric(0)
 	y_k = array(0, length(t_k))
 	
+	# training loop
 	while (i < maxiter && Error > tol) {
 		
 		forward = nnet_forward(x, w_ji, w_kj)
