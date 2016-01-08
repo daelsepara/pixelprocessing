@@ -2,7 +2,6 @@
 h_func <- function(x) {
 
 	return(1/(1+exp(-x)))
-	
 }
 
 # 1st-derivative of activation function
@@ -67,11 +66,11 @@ nnet_train <-function(maxiter = 1000000, learning_rate = 0.1, tol = 10^(-3), out
 	
 	# intialize weights
 	if (!Gaussian) {
-		w_ji = array(runif(n = ii[1]*ii[2], min = -1, max = 1), c(ii[2], ii[1]))
-		w_kj = array(runif(n = ii[1], min = -1, max = 1), c(ii[1], 1))
+		w_ji = array(runif(n = ii[1]*ii[2], min = -1, max = 1), rev(ii))
+		w_kj = runif(n = ii[1], min = -1, max = 1)
 	} else {
-		w_ji = array(rnorm(n = ii[1]*ii[2], mean = mu, sd = sigma), c(ii[2], ii[1]))
-		w_kj = array(rnorm(n = ii[1], mean = mu, sd = sigma), c(ii[1], 1))
+		w_ji = array(rnorm(n = ii[1]*ii[2], mean = mu, sd = sigma), rev(ii))
+		w_kj = rnorm(n = ii[1], mean = mu, sd = sigma)
 	}
 	
 	i = 0
@@ -91,7 +90,7 @@ nnet_train <-function(maxiter = 1000000, learning_rate = 0.1, tol = 10^(-3), out
 		
 		i = i + 1
 
-		# save current network performance
+		# save current performance
 		Error = backward$Error
 		y_k = forward$y_k
 		convergence = c(convergence, Error)
