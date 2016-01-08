@@ -6,9 +6,6 @@ h_func <- function(x) {
 
 # 1st-derivative of activation function
 h_funcd <- function(x) {
-	
-	h = h_func(x)
-	
 	return(x*(1-x))
 }
 
@@ -66,10 +63,10 @@ nnet_train <-function(maxiter = 1000000, learning_rate = 0.1, tol = 10^(-3), out
 	
 	# intialize weights
 	if (!Gaussian) {
-		w_ji = array(runif(n = ii[1]*ii[2], min = -1, max = 1), rev(ii))
+		w_ji = array(runif(n = length(ii), min = -1, max = 1), rev(ii))
 		w_kj = runif(n = ii[1], min = -1, max = 1)
 	} else {
-		w_ji = array(rnorm(n = ii[1]*ii[2], mean = mu, sd = sigma), rev(ii))
+		w_ji = array(rnorm(n = length(ii), mean = mu, sd = sigma), rev(ii))
 		w_kj = rnorm(n = ii[1], mean = mu, sd = sigma)
 	}
 	
