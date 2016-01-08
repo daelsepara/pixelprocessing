@@ -6,6 +6,7 @@ h_func <- function(x) {
 
 # 1st-derivative of activation function
 h_funcd <- function(x) {
+
 	return(x*(1-x))
 }
 
