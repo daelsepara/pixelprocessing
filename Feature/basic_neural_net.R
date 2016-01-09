@@ -60,7 +60,7 @@ nnet_train <-function(maxiter = 1000000, learning_rate = 0.1, tol = 10^(-3), out
 	
 	ii = dim(x)
 	
-	Error = 4;
+	Error = 4
 	
 	# intialize weights
 	if (!Gaussian) {
