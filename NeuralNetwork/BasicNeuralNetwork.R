@@ -97,6 +97,10 @@ nnet_train <-function(maxiter = 1000000, learning_rate = 0.1, tol = 10^(-3), tra
 		
 		# compute average error
 		Error = error_p / patterns
+		
+		if (i %% 100 == 0) {
+			print(paste('iteration = ', i, ' Error = ', Error))
+		}
 	}
 	
 	return(list('y_p' = y_p, 'Error' = Error, 'iterations' = i, 'w_kj' = w_kj, 'w_ji' = w_ji))
