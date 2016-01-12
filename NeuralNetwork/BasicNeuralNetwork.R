@@ -40,11 +40,11 @@ nnet_backprop <- function (y_k, z_j, x, t_k, w_kj) {
 }
 
 # network training
-nnet_train <-function(maxiter = 1000000, learning_rate = 0.1, tol = 10^(-3), training_set = array(c(0, 0, 1, 1, 0, 0, 0, 1), c(4, 2)) , output = c(0, 1, 1, 0), hidden_units = 4, min_max = 1, Gaussian = FALSE) {
+nnet_train <-function(maxiter = 1000000, learning_rate = 0.1, tol = 10^(-3), training_set = array(c(0, 0, 1, 1, 0, 0, 0, 1), c(4, 2)) , output = c(0, 1, 1, 0), hidden_units = 4, min_max = 1, isGaussian = FALSE) {
   
   # determine network dimensions from user input
   j = hidden_units
-  inputs = dim(training_set)[2]
+  inputs = ncol(training_set)
   
   # intialize interconnection weights with random values (-min_max, min_max) or Gaussian (mean = 0, sd = min_max)
   if (!isGaussian) {
