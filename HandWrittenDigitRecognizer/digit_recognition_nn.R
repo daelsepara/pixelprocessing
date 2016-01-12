@@ -6,8 +6,8 @@ h_func <- function(x) {
 
 # 1st-derivative of activation function
 h_funcd <- function(x) {
-  
-  return(x*(1-x))
+  z = h_func(x)
+  return(z*(1-z))
 }
 
 # feed-forward operation
