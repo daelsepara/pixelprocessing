@@ -38,7 +38,7 @@ nnet_backprop <- function (y_k, z_j, x, t_k, w_kj) {
   dWkj = as.vector(delta %*% z_j)
   dWji = t(outer(delta,w_kj) * h_funcd(z_j)) %*% x
   
-  return(list('dWkj' = dWkj, 'dWji' = dWji, 'Error' = mean(abs(error_k))))
+  return(list('dWkj' = dWkj, 'dWji' = dWji, 'Error' = sum(error_k^2)/2))
 }
 
 # network training
