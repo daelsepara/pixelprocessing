@@ -113,20 +113,23 @@ nnet_train <-function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), trainin
 # predict using neural network parameters (multi-class classification)
 nnet_predict <- function(test_set, w_ji, w_kj, threshold = 0.5) {
 
-	output = nnet_forward(test_set, w_ji, w_kj)$y_k
+	prediction_output = nnet_forward(test_set, w_ji, w_kj)$y_k
 	
-	prediction = array(0, c(nrow(test_set), 1))
+	m = nrow(test_set)
+	
+	prediction = array(0, c(m, 1))
 	
 	if (ncol(output) > 1) {
-		for (i in 1:nrow(test_set)) {
-			# for multi-class neural network classifier, each column in
-			# the output correspond to a different class. The node (in the output layer)
-			# with the highest output value corresponds to its predicted class
-			prediction[i] = which.max(output[i, ])
-		}
+
+		# for multi-class neural network classifier, each column in
+		# the output correspond to a different class. The node (in the output layer)
+		# with the highest output value corresponds to its predicted class
+		prediction = array(apply(prediction_output, 1, which.max), c(m, 1))
+		
 	} else {
+		
 		# for binary classifier, use threshold to set the output to 0 or 1
-		prediction[which(output > threshold)] = 1
+		prediction[which(prediction_output > threshold)] = 1
 	}
 	
 	return(prediction)
