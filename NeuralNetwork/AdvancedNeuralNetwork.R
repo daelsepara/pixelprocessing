@@ -105,3 +105,17 @@ nnet_train <-function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), trainin
 	
 	return(list('y_k' = y_k, 'Error' = Error, 'iterations' = iter, 'w_kj' = w_kj, 'w_ji' = w_ji))
 }
+
+# predict using neural network parameters (multi-class classification)
+nnet_predict <- function(test_set, w_ji, w_kj) {
+
+	output = nnet_forward(test_set, w_ji, w_kj)$y_k
+	
+	prediction = array(0, c(nrow(test_set), 1))
+	
+	for (i in 1:nrow(test_set)) {
+		prediction[i] = which.max(output[i, ])
+	}
+	
+	return(prediction)
+}
