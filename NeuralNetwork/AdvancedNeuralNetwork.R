@@ -58,7 +58,7 @@ nnet_train <-function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), trainin
 	
 	if (num_labels > 1) {
 		eye_matrix = diag(num_labels)
-		y_matrix = eye_matrix[y, ]
+		y_matrix = eye_matrix[output, ]
 	} else {
 		# binary classification
 		y_matrix = output
