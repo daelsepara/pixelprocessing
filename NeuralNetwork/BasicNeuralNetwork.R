@@ -65,7 +65,7 @@ nnet_train <-function(maxiter = 1000000, learning_rate = 0.1, tol = 10^(-3), tra
   # training loop (batch processing)
   while (i < maxiter && Error > tol) {
     
-    # perform both forward and backpropagation tasks on each pattern
+    # perform both forward and backpropagation on all patterns each iteration
     forward = nnet_forward(training_set, w_ji, w_kj)
     backward = nnet_backprop(forward$y_k, forward$z_j, training_set, output, w_kj)
     
