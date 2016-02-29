@@ -103,8 +103,11 @@ nnet_train <-function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), trainin
 		  print(paste('iteration = ', iter, ' Error = ', Error))
 		}
 	}
+
+	# add prediction
+	prediction = nnet_forward(training_set, w_ji, w_kj)
 	
-	return(list('y_k' = y_k, 'Error' = Error, 'iterations' = iter, 'w_kj' = w_kj, 'w_ji' = w_ji))
+	return(list('y_k' = y_k, 'Error' = Error, 'iterations' = iter, 'w_kj' = w_kj, 'w_ji' = w_ji, 'prediction' = prediction))
 }
 
 # predict using neural network parameters (multi-class classification)
