@@ -104,7 +104,7 @@ nnet_train <-function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), trainin
 	}
 
 	# add prediction
-	prediction = nnet_forward(training_set, w_ji, w_kj)
+	prediction = nnet_predict(training_set, w_ji, w_kj)
 	
 	return(list('y_k' = y_k, 'Error' = Error, 'iterations' = iter, 'w_kj' = w_kj, 'w_ji' = w_ji, 'prediction' = prediction))
 }
