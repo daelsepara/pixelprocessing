@@ -35,6 +35,7 @@ nnet_backprop <- function(training_set, y_k, z_2, a_2, w_ji, w_kj, y_matrix) {
 	x = cbind(array(1, c(nrow(training_set), 1)), training_set)
 	m = nrow(x)
 	
+	# cost function
 	cost = sum(-y_matrix * log(y_k) - (1 - y_matrix)*log(1 - y_k))/m
 	
 	# compute intermediate delta values per layer
@@ -88,7 +89,7 @@ nnet_train <-function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), trainin
 		forward = nnet_forward(training_set, w_ji, w_kj)
 		backward = nnet_backprop(training_set, forward$y_k, forward$z_2, forward$a_2, w_ji, w_kj, y_matrix)
 		
-		# update weights
+		# update weights (using learning rate and gradient descent)
 		w_ji = w_ji - learning_rate * backward$dWji
 		w_kj = w_kj - learning_rate * backward$dWkj
 		
@@ -107,7 +108,7 @@ nnet_train <-function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), trainin
 }
 
 # predict using neural network parameters (multi-class classification)
-nnet_predict <- function(test_set, w_ji, w_kj) {
+nnet_predict <- function(test_set, w_ji, w_kj, threshold = 0.5) {
 
 	output = nnet_forward(test_set, w_ji, w_kj)$y_k
 	
@@ -115,10 +116,14 @@ nnet_predict <- function(test_set, w_ji, w_kj) {
 	
 	if (ncol(output) > 1) {
 		for (i in 1:nrow(test_set)) {
+			# for multi-class neural network classifier, each column in
+			# the output correspond to a different class. The node (in the output layer)
+			# with the highest output value corresponds to its predicted class
 			prediction[i] = which.max(output[i, ])
 		}
 	} else {
-		prediction = output
+		# for binary classifier, use threshold to set the output to 0 or 1
+		prediction[which(output > threshold)] = 1
 	}
 	
 	return(prediction)
