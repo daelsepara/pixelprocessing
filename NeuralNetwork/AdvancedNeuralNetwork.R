@@ -113,8 +113,12 @@ nnet_predict <- function(test_set, w_ji, w_kj) {
 	
 	prediction = array(0, c(nrow(test_set), 1))
 	
-	for (i in 1:nrow(test_set)) {
-		prediction[i] = which.max(output[i, ])
+	if (ncol(output) > 1) {
+		for (i in 1:nrow(test_set)) {
+			prediction[i] = which.max(output[i, ])
+		}
+	} else {
+		prediction = output
 	}
 	
 	return(prediction)
