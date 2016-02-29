@@ -1,12 +1,12 @@
 # sigmoid activation function
 h_func <- function(x) {
-  return(1/(1 + exp(-x)))
+	return(1/(1 + exp(-x)))
 }
 
 # 1st-derivative of activation function
 h_funcd <- function(x) {
-  z = h_func(x)
-  return(z * (1 - z))
+	z = h_func(x)
+	return(z * (1 - z))
 }
 
 # forward propagation
@@ -56,7 +56,6 @@ nnet_train <-function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), trainin
 	# i.e. matrix, each row corresponds to a training pattern.
 	# Each element in the row-vector is a 0 or 1 indicating whether
 	# or not it belongs to that particular class
-	
 	if (num_labels > 1) {
 		eye_matrix = diag(num_labels)
 		y_matrix = eye_matrix[output, ]
