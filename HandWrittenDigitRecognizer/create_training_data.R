@@ -5,7 +5,8 @@ create_training_data <- function(n = 100) {
   patterns_per_sample = n / 10
   
   training_set = array(0, c(n, 784))
- 
+  training_output = array(0, c(n, 1))
+  
   for (ss in 0:9) {
     
     data_ = readJPEG(paste0('mnist_train', ss, '.jpg'))
@@ -29,8 +30,9 @@ create_training_data <- function(n = 100) {
     reshape_[i1] = 1
     
     training_set[(ss*patterns_per_sample+1):(ss*patterns_per_sample+patterns_per_sample), ] = reshape_[1:patterns_per_sample, ]
+    training_output[(ss*patterns_per_sample+1):(ss*patterns_per_sample+patterns_per_sample)] = ss + 1
   }
   
-  return(training_set)
+  return(list('training_set' = training_set, 'training_output' = training_output))
   
 }
