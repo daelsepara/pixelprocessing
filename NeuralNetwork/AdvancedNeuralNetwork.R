@@ -118,7 +118,7 @@ nnet_predict <- function(test_set, w_ji, w_kj, threshold = 0.5) {
 	
 	prediction = array(0, c(m, 1))
 	
-	if (ncol(output) > 1) {
+	if (ncol(prediction_output) > 1) {
 
 		# for multi-class neural network classifier, each column in
 		# the output correspond to a different class. The node (in the output layer)
