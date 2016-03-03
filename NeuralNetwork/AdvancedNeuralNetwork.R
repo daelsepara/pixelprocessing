@@ -189,7 +189,7 @@ nnet_optimize <-function(maxiter = 100, training_set = array(0) , output = array
 		
 	# save current performance
 	Error = optimizationResult$cost
-	y_k = nnet_forward(training_set, w_ji, w_kj)
+	y_k = nnet_forward(training_set, w_ji, w_kj)$y_k
     
 	# add prediction
 	prediction = nnet_predict(training_set, w_ji, w_kj)
