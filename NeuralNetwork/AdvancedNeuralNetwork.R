@@ -37,14 +37,14 @@ nnet_backprop <- function(training_set, y_k, z_2, a_2, w_ji, w_kj, y_matrix, lam
 	
 	# compute intermediate delta values per layer
 	d3 = y_k - y_matrix
-	d2 = d3 %*% w_kj[, 2:ncol(w_kj)]*h_funcd(z_2)
+	d2 = d3 %*% w_kj[, 2:ncol(w_kj)] * h_funcd(z_2)
 	
 	# compute gradient
-	dWji = (t(d2) %*% x)/m
-	dWkj = (t(d3) %*% a_2)/m
+	dWji = (t(d2) %*% x) / m
+	dWkj = (t(d3) %*% a_2) / m
 
 	# cost function
-	cost = sum(-y_matrix * log(y_k) - (1 - y_matrix)*log(1 - y_k))/m
+	cost = sum(-y_matrix * log(y_k) - (1 - y_matrix) * log(1 - y_k)) / m
 	
 	# regularization on lambda != 0
 	if (lambda != 0) {
@@ -52,10 +52,11 @@ nnet_backprop <- function(training_set, y_k, z_2, a_2, w_ji, w_kj, y_matrix, lam
 		rWji = w_ji
 		rWkj = w_kj
 		
+		# do not regularize bias column
 		rWji[, 1] = array(0, nrow(w_ji))
 		rWkj[, 1] = array(0, nrow(w_kj))
 		
-		cost = cost + lambda*(sum(rWji*rWji) + sum(rWkj*rWkj))/(2*m)
+		cost = cost + lambda*(sum(rWji * rWji) + sum(rWkj * rWkj)) / (2 * m)
 		
 		dWji = dWji + lambda*rWji/m
 		dWkj = dWkj + lambda*rWkj/m
