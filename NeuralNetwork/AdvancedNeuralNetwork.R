@@ -58,8 +58,8 @@ nnet_backprop <- function(training_set, y_k, z_2, a_2, w_ji, w_kj, y_matrix, lam
 		
 		cost = cost + lambda*(sum(rWji * rWji) + sum(rWkj * rWkj)) / (2 * m)
 		
-		dWji = dWji + lambda*rWji/m
-		dWkj = dWkj + lambda*rWkj/m
+		dWji = dWji + lambda*rWji / m
+		dWkj = dWkj + lambda*rWkj / m
 	}
 
 	return(list('dWkj' = dWkj, 'dWji' = dWji, 'Error' = cost))	
@@ -76,8 +76,9 @@ nnet_cost <- function(X, P1, P2, P3 , P4, P5, P6) {
 	# P6 lambda (regularization)
 	
 	# roll up vectors into arrays
-	w_ji = array(X[1:(P4 * (P3 + 1))], c(P4, P3 + 1))
-	w_kj = array(X[(1 + (P4 * (P3 + 1))):length(X)], c(P5, P4 + 1))
+	offs = P4 * (P3 + 1)
+	w_ji = array(X[1:offs], c(P4, P3 + 1))
+	w_kj = array(X[(1 + offs):length(X)], c(P5, P4 + 1))
 
 	# compute cost function (J) and its gradients (partial derivatives)
 	# using forward and backpropagation
@@ -150,7 +151,7 @@ nnet_train <-function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), trainin
 	return(list('y_k' = y_k, 'Error' = Error, 'iterations' = iter, 'w_kj' = w_kj, 'w_ji' = w_ji, 'prediction' = prediction))
 }
 
-# network optimization
+# network training (using advanced optimization algorithm fmincg)
 nnet_optimize <-function(maxiter = 100, training_set = array(0) , output = array(0), hidden_units = 0, num_labels = 1, min_max = 1, isGaussian = FALSE, lambda = 0) {
 
 	# For multi-classification problem, format expected output
@@ -178,17 +179,14 @@ nnet_optimize <-function(maxiter = 100, training_set = array(0) , output = array
 		w_kj = array(rnorm(n = num_labels * (j + 1), mean = 0, sd = abs(min_max)), c(num_labels, j + 1))
 	}
   
-	Error = 1.0
-	
-	y_k = numeric(0)
-
 	initialWeights = c(as.vector(w_ji), as.vector(w_kj))
 	optimizationResult = fmincg(nnet_cost, initialWeights, maxiter, training_set, y_matrix, inputs, j, num_labels, lambda)
 	
-	w_ji = array(optimizationResult$X[1:(j * (inputs + 1))], c(j, inputs + 1))
-	w_kj = array(optimizationResult$X[(1 + (j * (inputs + 1))):length(optimizationResult$X)], c(num_labels, j + 1))
+	offs = j * (inputs + 1)
+	w_ji = array(optimizationResult$X[1:offs], c(j, inputs + 1))
+	w_kj = array(optimizationResult$X[(1 + offs):length(optimizationResult$X)], c(num_labels, j + 1))
 		
-	# save current performance
+	# performance
 	Error = optimizationResult$cost
 	y_k = nnet_forward(training_set, w_ji, w_kj)$y_k
     

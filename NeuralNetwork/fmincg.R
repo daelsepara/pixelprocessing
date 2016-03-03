@@ -46,7 +46,14 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 # 1) Function name and argument specifications
 # 2) Output display
 #
-# This conversion (to R) by:  SD Separa (2016)
+# This conversion to R by:  SD Separa (2016)
+#
+# [sdsepara] Changes made:
+#
+# 1) suppress warnings on numerical error
+# 2) realmin obtained from machine parameters
+# 3) add one more check if some operations are NAN; if() fails
+# 4) calls f() directly passing all parameters P1-P6 instead of creating an argstr
 
 	realmin = .Machine$double.xmin
 
