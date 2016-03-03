@@ -69,10 +69,12 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 	f1 = eval_$J
 	df1 = eval_$grad
 
-	i = i + (MaxIter > 0) 			# count epochs?!
+	# count epochs?!
+	i = i + (MaxIter > 0)
+	
 	s = -df1            # search direction is steepest
 	d1 = t(-s) %*% s    # this is the slope
-	z1 = red/(1-d1)     # initial step is red/(|s|+1)
+	z1 = red/(1 - d1)	# initial step is red/(|s|+1)
 
 	while (i < abs(MaxIter)) {
 	  
@@ -103,7 +105,7 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 		if (MaxIter>0) {
 			M = MAX
 		} else {
-			M = min(MAX, -MaxIter-i)
+			M = min(MAX, -MaxIter - i)
 		}
 		
 		# initialize quantities
@@ -111,34 +113,35 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 		limit = -1
 		
 		while(1) {
-			if (is.nan(f2) || is.nan(f1+z1*RHO*d1) || is.nan(d2) || is.nan(-SIG*d1) || is.nan(M)) {
+		
+			if (is.nan(f2) || is.nan(f1 + z1 * RHO * d1) || is.nan(d2) || is.nan(-SIG * d1) || is.nan(M)) {
 				break
 			}
 			
-			while (((f2 > f1+z1*RHO*d1) || (d2 > -SIG*d1)) && (M > 0)) {
+			while (((f2 > f1 + z1 * RHO * d1) || (d2 > -SIG * d1)) && (M > 0)) {
 
 				# tighten the bracket
 				limit = z1
 				
 				if (f2 > f1) {
 					# quadratic fit
-					z2 = z3 - (0.5*d3*z3*z3)/(d3*z3+f2-f3)
+					z2 = z3 - (0.5 * d3 * z3 * z3) / (d3 * z3 + f2 - f3)
 				} else {
 					# cubic fit
-					A = 6*(f2-f3)/z3+3*(d2+d3)
-					B = 3*(f3-f2)-z3*(d3+2*d2)
+					A = 6 * (f2 - f3) / z3 +3 *(d2 + d3)
+					B = 3 * (f3 - f2) - z3 * (d3 + 2*d2)
 					
 					# numerical error possible - ok!
-					z2 = suppressWarnings((sqrt(B*B-A*d2*z3*z3)-B)/A)
+					z2 = suppressWarnings((sqrt(B * B - A * d2 * z3 * z3)- B)/A)
 				}
 			
 				if (is.nan(z2) || is.infinite(z2)) {
 					# if we had a numerical problem then bisect
-					z2 = z3/2
+					z2 = z3 / 2
 				}
 				
 				# don't accept too close to limits
-				z2 = max(min(z2, INT*z3),(1-INT)*z3)
+				z2 = max(min(z2, INT * z3),(1 - INT) * z3)
 				
 				# update the step
 				z1 = z1 + z2
@@ -156,13 +159,13 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 				d2 = t(df2) %*% s
 				
 				# z3 is now relative to the location of z2
-				z3 = z3-z2;                    
+				z3 = z3 - z2
 			}
 			
-			if (f2 > f1+z1*RHO*d1 || d2 > -SIG*d1) {
+			if (f2 > f1 + z1 * RHO * d1 || d2 > -SIG * d1) {
 				# this is a failure
-				break;
-			} else if (d2 > SIG*d1) {
+				break
+			} else if (d2 > SIG * d1) {
 				# success
 				success = 1
 				break
@@ -172,34 +175,35 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 			}	
 		
 			# make cubic extrapolation
-			A = 6*(f2-f3)/z3+3*(d2+d3)
-			B = 3*(f3-f2)-z3*(d3+2*d2)
+			A = 6 *(f2 -f3) / z3 +3 * (d2 + d3)
+			B = 3 *(f3 -f2) - z3 * (d3 + 2*d2)
 			
 			# num. error possible - ok!
-			z2 = suppressWarnings(-d2*z3*z3/(B+sqrt(B*B-A*d2*z3*z3)))
+			z2 = suppressWarnings(-d2 * z3 * z3 / (B + sqrt(B * B - A * d2 * z3 * z3)))
 			
 			# num prob or wrong sign?
 			if (is.nan(z2) || is.infinite(z2) || z2 < 0) {
 				# if we have no upper limit
 				if (limit < -0.5) {
 					# the extrapolate the maximum amount
-					z2 = z1 * (EXT-1)
+					z2 = z1 * (EXT - 1)
 				} else {
 					# otherwise bisect
-					z2 = (limit-z1)/2
+					z2 = (limit - z1) / 2
 				}
 			} else if ((limit > -0.5) && (z2+z1 > limit)) {
 				# extraplation beyond max?
-				z2 = (limit-z1)/2
-			} else if ((limit < -0.5) && (z2+z1 > z1*EXT)) {
-				# extrapolation beyond limit
+				z2 = (limit - z1) / 2
+			} else if ((limit < -0.5) && (z2 + z1 > z1 * EXT)) {
+				# extrapolation beyond limit?
+				
 				# set to extrapolation limit
-				z2 = z1*(EXT-1.0)
-			} else  if (z2 < -z3*INT) {
-				z2 = -z3*INT
-			} else if ((limit > -0.5) && (z2 < (limit-z1)*(1.0-INT))) {
+				z2 = z1 * (EXT - 1.0)
+			} else  if (z2 < -z3 * INT) {
+				z2 = -z3 * INT
+			} else if ((limit > -0.5) && (z2 < (limit - z1) * (1.0 - INT))) {
 				# too close to limit?
-				z2 = (limit-z1)*(1.0-INT);
+				z2 = (limit - z1) * (1.0 - INT)
 			}
 		
 			# set point 3 equal to point 2
@@ -214,15 +218,16 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 			eval_ = f(X, P1, P2, P3 , P4, P5, P6)
 			f2 = eval_$J
 			df2 = eval_$grad
+			
 			M = M - 1
 			
 			# count epochs?!
 			i = i + (MaxIter > 0)
 			
-			d2 = t(df2)%*%s;
-			
-			# end of line search
-		}
+			d2 = t(df2) %*% s
+
+		# end of line search
+		} 
 		
 		# if line search succeeded
 		if (success) {
@@ -233,24 +238,24 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 			print(paste0(S, i, "| Cost: ", f1))
 			
 			# Polack-Ribiere direction
-			s = ((t(df2)%*%df2-t(df1)%*%df2)/(t(df1)%*%df1))*s - df2
+			s = ((t(df2) %*% df2 - t(df1) %*% df2) / (t(df1) %*% df1)) * s - df2
 			
 			# swap derivatives
 			tmp = df1
 			df1 = df2
 			df2 = tmp
 			
-			d2 = t(df1)%*%s;
+			d2 = t(df1) %*% s
 
 			# new slope must be negative
 			if (d2 > 0)  {
 				# otherwise use steepest direction
 				s = -df1
-				d2 = -t(s)%*%s;    
+				d2 = -t(s) %*% s
 			}
 
 			# slope ratio but max RATIO
-			z1 = z1 * min(RATIO, d1/(d2-realmin))
+			z1 = z1 * min(RATIO, d1 / (d2 - realmin))
 			d1 = d2
 			
 			# this line search did not fail
@@ -261,7 +266,7 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 			# restore point from before failed line search
 			X = X0
 			f1 = f0
-			df1 = df0  
+			df1 = df0
 
 			# line search failed twice in a row
 			if (ls_failed || i > abs(MaxIter)) {
@@ -277,7 +282,7 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 			# try steepest
 			s = -df1
 			d1 = -t(s) %*% s
-			z1 = 1/(1-d1)
+			z1 = 1 / (1 - d1)
 			
 			# this line search failed
 			ls_failed = 1

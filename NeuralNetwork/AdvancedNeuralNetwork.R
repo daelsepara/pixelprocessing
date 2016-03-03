@@ -64,20 +64,26 @@ nnet_backprop <- function(training_set, y_k, z_2, a_2, w_ji, w_kj, y_matrix, lam
 	return(list('dWkj' = dWkj, 'dWji' = dWji, 'Error' = cost))	
 }
 
+# neutral network cost function for use with advanced optimization method (fmincg)
 nnet_cost <- function(X, P1, P2, P3 , P4, P5, P6) {
 
 	# P1 training_set
-	# P2 y_matrix
-	# P3 number of inputs
+	# P2 y_matrix (expected output)
+	# P3 number of input units
 	# P4 hidden layer units
 	# P5 number of labels
-
+	# P6 lambda (regularization)
+	
+	# roll up vectors into arrays
 	w_ji = array(X[1:(P4 * (P3 + 1))], c(P4, P3 + 1))
 	w_kj = array(X[(1 + (P4 * (P3 + 1))):length(X)], c(P5, P4 + 1))
 
+	# compute cost function (J) and its gradients (partial derivatives)
+	# using forward and backpropagation
 	forward = nnet_forward(P1, w_ji, w_kj)
 	result = nnet_backprop(P1, forward$y_k, forward$z_2, forward$a_2, w_ji, w_kj, P2, P6)
 
+	# unroll gradient matrices into one vector
 	grad = c(as.vector(result$dWji), as.vector(result$dWkj))
 
 	return(list('J' = result$Error, 'grad' = grad))
@@ -201,14 +207,12 @@ nnet_predict <- function(test_set, w_ji, w_kj, threshold = 0.5) {
 	prediction = array(0, c(m, 1))
 	
 	if (ncol(prediction_output) > 1) {
-
 		# for multi-class neural network classifier, each column in
 		# the output correspond to a different class. The node (in the output layer)
 		# with the highest output value corresponds to its predicted class
 		prediction = array(apply(prediction_output, 1, which.max), c(m, 1))
 		
 	} else {
-		
 		# for binary classifier, use threshold to set the output to 0 or 1
 		prediction[which(prediction_output > threshold)] = 1
 	}
