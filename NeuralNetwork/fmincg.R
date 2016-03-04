@@ -1,4 +1,4 @@
-fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
+fmincg<-function(f, X, options_ = 100, P1, P2, P3, P4, P5, P6) {
 # Minimize a continuous differentialble multivariate function. Starting point
 # is given by "X" (D by 1), and the function named in the string "f", must
 # return a function value and a vector of partial derivatives. The Polack-
@@ -57,7 +57,15 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 
 	realmin = .Machine$double.xmin
 
-	red=1
+	# if check if reduction parameter was specified
+	if (length(options_) > 1) {
+		runLength = options_[1]
+		red = options_[2]
+	} else {
+		runLength = options_
+		red = 1
+	}
+	
 	S='Iteration '
 
 	RHO = 0.01		# a bunch of constants for line searches
@@ -77,16 +85,16 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 	df1 = eval_$grad
 
 	# count epochs?!
-	i = i + (MaxIter > 0)
+	i = i + (runLength < 0)
 	
 	s = -df1            # search direction is steepest
 	d1 = t(-s) %*% s    # this is the slope
 	z1 = red/(1 - d1)	# initial step is red/(|s|+1)
 
-	while (i < abs(MaxIter)) {
+	while (i < abs(runLength)) {
 	  
 		# count iterations?!
-		i = i + (MaxIter > 0)
+		i = i + (runLength > 0)
 
 		# make a copy of current values
 		X0 = X
@@ -101,7 +109,7 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 		df2 = eval_$grad
 		
 		# count epochs?!
-		i = i + (MaxIter > 0)
+		i = i + (runLength < 0)
 		
 		# initialize point 3 equal to point 1
 		d2 = t(df2) %*% s
@@ -109,10 +117,10 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 		d3 = d1
 		z3 = -z1
 		
-		if (MaxIter>0) {
+		if (runLength>0) {
 			M = MAX
 		} else {
-			M = min(MAX, -MaxIter - i)
+			M = min(MAX, -runLength - i)
 		}
 		
 		# initialize quantities
@@ -120,11 +128,6 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 		limit = -1
 		
 		while(1) {
-		
-			if (is.nan(f2) || is.nan(f1 + z1 * RHO * d1) || is.nan(d2) || is.nan(-SIG * d1) || is.nan(M)) {
-				break
-			}
-			
 			while (((f2 > f1 + z1 * RHO * d1) || (d2 > -SIG * d1)) && (M > 0)) {
 
 				# tighten the bracket
@@ -161,7 +164,7 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 				M = M - 1
 				
 				# count epochs?!
-				i = i + (MaxIter > 0)
+				i = i + (runLength < 0)
 				
 				d2 = t(df2) %*% s
 				
@@ -229,7 +232,7 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 			M = M - 1
 			
 			# count epochs?!
-			i = i + (MaxIter > 0)
+			i = i + (runLength < 0)
 			
 			d2 = t(df2) %*% s
 
@@ -276,7 +279,7 @@ fmincg<-function(f, X, MaxIter = 100, P1, P2, P3, P4, P5, P6) {
 			df1 = df0
 
 			# line search failed twice in a row
-			if (ls_failed || i > abs(MaxIter)) {
+			if (ls_failed || i > abs(runLength)) {
 				# or we ran out of time, so we give up
 				break
 			}
