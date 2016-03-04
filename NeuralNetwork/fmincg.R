@@ -192,7 +192,7 @@ fmincg<-function(f, X, options_ = 100, P1, P2, P3, P4, P5, P6) {
 			z2 = suppressWarnings(-d2 * z3 * z3 / (B + sqrt(B * B - A * d2 * z3 * z3)))
 			
 			# num prob or wrong sign?
-			if (is.nan(z2) || is.infinite(z2) || z2 < 0) {
+			if (!is.numeric(z2) || is.nan(z2) || is.infinite(z2) || z2 < 0) {
 				# if we have no upper limit
 				if (limit < -0.5) {
 					# the extrapolate the maximum amount
