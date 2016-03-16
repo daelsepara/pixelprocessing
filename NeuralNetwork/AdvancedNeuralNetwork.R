@@ -209,7 +209,7 @@ nnet_predict <- function(test_set, w_ji, w_kj, threshold = 0.5) {
 		# for multi-class neural network classifier, each column in
 		# the output correspond to a different class. The node (in the output layer)
 		# with the highest output value corresponds to its predicted class
-		prediction = array(apply(prediction_output, 1, which.max), c(m, 1))
+		prediction = array(as.integer(apply(prediction_output, 1, which.max)), c(m, 1))
 		
 	} else {
 		# for binary classifier, use threshold to set the output to 0 or 1
