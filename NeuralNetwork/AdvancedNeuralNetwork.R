@@ -1,18 +1,18 @@
 nnet_sigmoid <- function(x) {
-  # Sigmoid activation function
+# Sigmoid activation function
   
   return(1/(1 + exp(-x)))
 }
 
 nnet_dsigmoid <- function(x) {
-  # 1st-derivative of sigmoid activation function
+# 1st-derivative of sigmoid activation function
   
   z = nnet_sigmoid(x)
   return(z * (1 - z))
 }
 
 nnet_forward <- function(training_set, w_ji, w_kj, softmax = FALSE) {
-  # Forward propagation
+# Forward propagation
   
   # add bias column to input layer
   x = cbind(array(1, c(nrow(training_set), 1)), training_set)
@@ -35,7 +35,7 @@ nnet_forward <- function(training_set, w_ji, w_kj, softmax = FALSE) {
 }
 
 nnet_backprop <- function(training_set, y_k, z_2, a_2, w_ji, w_kj, y_matrix, lambda = 0, softmax = FALSE) {
-  # Backward propagation
+# Backward propagation
   
   # add bias column
   x = cbind(array(1, c(nrow(training_set), 1)), training_set)
@@ -50,9 +50,9 @@ nnet_backprop <- function(training_set, y_k, z_2, a_2, w_ji, w_kj, y_matrix, lam
   
   # compute cost function and gradient
   if (!softmax) {
-    
+
     cost = sum(-y_matrix * log(y_k) - (1 - y_matrix) * log(1 - y_k))
-    
+  	
   } else {
     
     # softmax activation cost function
@@ -78,12 +78,12 @@ nnet_backprop <- function(training_set, y_k, z_2, a_2, w_ji, w_kj, y_matrix, lam
     dWji = dWji / m
     dWkj = dWkj / m
   }
-  
+
   return(list('dWkj' = dWkj, 'dWji' = dWji, 'Error' = cost))	
 }
 
 nnet_cost <- function(X, P1, P2, P3 , P4, P5, P6, softmax = FALSE) {
-  # Neutral network cost function for use with advanced optimization method (fmincg/optim)
+# Neutral network cost function for use with advanced optimization method (fmincg/optim)
   
   # P1 training_set
   # P2 y_matrix (expected output)
@@ -109,7 +109,7 @@ nnet_cost <- function(X, P1, P2, P3 , P4, P5, P6, softmax = FALSE) {
 }
 
 nnet_labels <- function(output, num_labels) {
-  # create labels for multi-class classification
+# create labels for multi-class classification
   
   # For multi-classification problem, format expected output
   # i.e. matrix, each row corresponds to a training pattern.
@@ -127,7 +127,7 @@ nnet_labels <- function(output, num_labels) {
 }
 
 nnet_train <- function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), training_set = array(0) , output = array(0), hidden_units = 0, num_labels = 1, min_max = 1, isGaussian = FALSE, lambda = 0, softmax = FALSE) {
-  # Network training using stochastic gradient descent and batch processing
+# Network training using gradient descent
   
   # determine network dimensions from user input
   j = hidden_units
@@ -141,12 +141,12 @@ nnet_train <- function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), traini
   Error = 1.0
   
   y_k = numeric(0)
-  
+
   m = nrow(training_set)
   y_matrix = nnet_labels(output, num_labels)
   
-  while (iter < maxiter && Error > tol) {
-    
+  while (!is.nan(Error) && (iter < maxiter && Error > tol)) {
+
     # for training, perform forward and backpropagation each iteration
     forward = nnet_forward(training_set, w_ji, w_kj, softmax)
     backward = nnet_backprop(training_set, forward$y_k, forward$z_2, forward$a_2, w_ji, w_kj, y_matrix, lambda, softmax)
@@ -172,12 +172,16 @@ nnet_train <- function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), traini
     }
     
     y_k = forward$y_k
-    
+
     iter = iter + 1
     
     if (iter %% 1000 == 0) {
       cat(paste('iteration = ', iter, ' Error = ', Error, '\n'))
     }
+  }
+  
+  if  (is.nan(Error)) {
+    print(paste0('Error: ', Error))
   }
   
   # add prediction
@@ -208,7 +212,7 @@ nnet_stochastic <- function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), t
     batch_size = m
   }
   
-  while (iter < maxiter && Error > tol) {
+  while (!is.nan(Error) && iter < maxiter && Error > tol) {
     for (i in 1:floor(m/batch_size)) {
       
       a = (i - 1) * batch_size + 1
@@ -250,7 +254,12 @@ nnet_stochastic <- function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), t
         cat(paste('iteration = ', iter, ' Error = ', Error, '\n'))
       }
       
-      if (iter >= maxiter || Error <= tol) {
+      if (is.nan(Error) || iter >= maxiter || Error <= tol) {
+        
+        if  (is.nan(Error)) {
+          print(paste0('Error: ', Error))
+        }
+        
         break
       }
     }
@@ -265,7 +274,7 @@ nnet_stochastic <- function(maxiter = 100, learning_rate = 0.1, tol = 10^(-3), t
 }
 
 nnet_weights <- function(min_max = 1, m = 1, n = 1, isGaussian = FALSE) {
-  # intialize interconnection weights with random values (-min_max, min_max) or Gaussian (mean = 0, sd = min_max)
+# intialize interconnection weights with random values (-min_max, min_max) or Gaussian (mean = 0, sd = min_max)
   
   if (!isGaussian) {
     
@@ -277,11 +286,11 @@ nnet_weights <- function(min_max = 1, m = 1, n = 1, isGaussian = FALSE) {
   }  
 }
 
-nnet_optimize <- function(maxiter = 100, training_set = array(0) , output = array(0), hidden_units = 0, num_labels = 1, min_max = 1, isGaussian = FALSE, lambda = 0, softmax = FALSE) {
-  # Network training using advanced optimization algorithm fmincg
+nnet_minimize <- function(maxiter = 100, training_set = array(0) , output = array(0), hidden_units = 0, num_labels = 1, min_max = 1, isGaussian = FALSE, lambda = 0, softmax = FALSE) {
+# Network training using advanced optimization algorithm fmincg
   
   y_matrix = nnet_labels(output, num_labels)
-  
+	
   # determine network dimensions from user input
   j = hidden_units
   inputs = ncol(training_set)
@@ -289,26 +298,26 @@ nnet_optimize <- function(maxiter = 100, training_set = array(0) , output = arra
   # initialize weights with random values
   w_ji = nnet_weights(min_max, j, inputs + 1, isGaussian)
   w_kj = nnet_weights(min_max, num_labels, j + 1, isGaussian)
-  
+  	
   theta = c(as.vector(w_ji), as.vector(w_kj))
   result = fmincg(nnet_cost, theta, maxiter, training_set, y_matrix, inputs, j, num_labels, lambda, softmax)
   
   offs = j * (inputs + 1)
   w_ji = array(result$X[1:offs], c(j, inputs + 1))
   w_kj = array(result$X[(1 + offs):length(result$X)], c(num_labels, j + 1))
-  
+  	
   # performance
   Error = result$cost
   y_k = nnet_forward(training_set, w_ji, w_kj, softmax)$y_k
-  
+    
   # add prediction
   prediction = nnet_predict(test_set = training_set, w_ji = w_ji, w_kj = w_kj, softmax = softmax)
   
   return(list('y_k' = y_k, 'Error' = Error, 'lambda' = lambda, 'iterations' = result$i, 'w_kj' = w_kj, 'w_ji' = w_ji, 'prediction' = prediction))
 }
 
-nnet_minimize <- function(maxiter = 100, training_set = array(0) , output = array(0), hidden_units = 0, num_labels = 1, min_max = 1, isGaussian = FALSE, lambda = 0, method = 'L-BFGS-B', softmax = FALSE) {
-  # Network training using R's optimizer
+nnet_optimize <- function(maxiter = 100, training_set = array(0) , output = array(0), hidden_units = 0, num_labels = 1, min_max = 1, isGaussian = FALSE, lambda = 0, method = 'L-BFGS-B', softmax = FALSE) {
+# Network training using R's optimizer
   
   y_matrix = nnet_labels(output, num_labels)
   
@@ -340,7 +349,7 @@ nnet_minimize <- function(maxiter = 100, training_set = array(0) , output = arra
 }
 
 nnet_softmax <- function(x) {
-  # numerically stable softmax activation function for use with multi-class classification
+# numerically stable softmax activation function for use with multi-class classification
   
   # for repmat
   require(pracma)
@@ -351,7 +360,7 @@ nnet_softmax <- function(x) {
   # get the maximum in each row
   m_k = array(apply(x, 1, max), c(m, 1))
   ezk = exp(x - repmat(m_k, 1, k))
-  
+
   # compute softmax
   smk = ezk / repmat(array(apply(ezk, 1, sum), c(m, 1)), 1, k)
   
@@ -359,7 +368,7 @@ nnet_softmax <- function(x) {
 }
 
 nnet_predict <- function(test_set, w_ji, w_kj, softmax = FALSE, threshold = 0.5) {
-  # Predict using neural network parameters (multi-class classification)
+# Predict using neural network parameters (multi-class classification)
   
   prediction_output = nnet_forward(test_set, w_ji, w_kj, softmax)$y_k
   
@@ -372,7 +381,7 @@ nnet_predict <- function(test_set, w_ji, w_kj, softmax = FALSE, threshold = 0.5)
     # the output correspond to a different class. The node (in the output layer)
     # with the highest output value corresponds to its predicted class
     prediction = array(as.integer(apply(prediction_output, 1, which.max)), c(m, 1))
-    
+  	
   } else {
     # for binary classifier, use threshold to set the output to 0 or 1
     prediction[which(prediction_output > threshold)] = 1
